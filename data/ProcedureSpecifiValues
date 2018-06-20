@@ -1,0 +1,485 @@
+-----------------------------------------------------------------OGDExtentTypeEnum
+OGDExtentTypeEnum
+Stomach
+Oesophagus
+Intubation
+failed
+D2- 2nd part of duodenum
+Duodenal bulb
+Anastomosis
+Abandoned
+-----------------------------------------------------------------OGDLimitationsEnum
+OGDLimitationsEnum
+Other
+Not Limited
+benign stricture
+malignant stricture
+patient discomfort
+clinical intention achieved
+-----------------------------------------------------------------OGDIndicationsEnum
+Other
+Abdominal pain
+Abnormality on CT / barium
+Anaemia
+Barretts oesophagus
+Diarrhoea
+Dyspepsia
+Dysphagia
+Haematemesis
+Heartburn / reflux
+Melaena
+Nausea / vomiting
+Odynophagia
+PEG change
+PEG placement
+PEG removal
+Positive TTG / EMA
+Stent change
+Stent placement
+Stent removal
+
+Follow up of gastric ulcer
+Varices surveillance / screening
+Weight loss
+-----------------------------------------------------------------OGDDiagnosisLookupEnum
+Normal
+Other
+Angiodysplasia
+Polyp/s
+Stricture - inflammatory
+Stricture - malignant
+Stricture - postoperative
+Achalasia
+Barrett's oesophagus
+[61] Dieulafoy lesion
+Duodenal polyp
+Duodenal tumour - benign
+Duodenal tumour - malignant
+Duodenal ulcer
+Duodenitis - erosive
+Duodenitis - non-erosive
+Extrinsic compression
+Gastric diverticulum
+Gastric fistula
+Gastric foreign body
+Gastric polyp(s)
+Gastric postoperative appearance
+Gastric tumour - benign
+Gastric tumour - malignant
+Gastric tumour - submucosal
+Gastric ulcer
+Gastric varices
+Gastritis - erosive
+Gastritis - non-erosive
+Gastropathy-portal hypertensive
+GAVE
+Hiatus hernia
+Mallory-Weiss tear
+Oesophageal candidiasis
+Oesophageal diverticulum
+Oesophageal fistula
+Oesophageal foreign body
+Oesophageal polyp
+Oesophageal stricture - benign
+Oesophageal stricture - malignant Oesophageal tumour - benign
+Oesophageal tumour - malignant
+Oesophageal ulcer
+Oesophageal varices
+Oesophagitis - eosinophilic
+Oesophagitis - reflux
+Pharyngeal pouch
+Pyloric stenosis
+Scar
+Schatzki ring
+-----------------------------------------------------------------OGDTherapeuticLookupEnum
+None
+Other
+Argon beam photocoagulation
+Balloon dilation
+Banding of haemorrhoid
+Clip placement
+Endoloop placement
+Foreign body removal
+Injection therapy
+Marking / tattooing
+Polyp - cold biopsy
+Polyp - EMR
+Polyp - ESD
+Stent change
+Stent placement
+Stent removal
+Haemostasis
+Band ligation
+Botox injection
+EMR
+ESD
+Heater probe
+Hot biopsy
+PEG change
+PEG placement
+PEG removal
+Polypectomy
+Radio frequency ablation
+-----------------------------------------------------------------OGDBiopsyEnum
+None
+Oesophagus
+Stomach
+Duodenal bulb
+D2 - 2nd part of duodenum
+-----------------------------------------------------------------OGDBowelPrepEnum
+Not Specified excellent
+good
+fair
+inadequate
+-----------------------------------------------------------------ColonExtentTypeEnum
+Anastomosis
+Transverse Colon
+Terminal ileum
+Splenic flexure
+Sigmoid colon
+Rectum
+Pouch
+Neo-terminal ileum
+Ileo-colon anastomosis
+Hepatic flexure
+Descending Colon
+Caecum
+Ascending Colon
+Anus
+Abandoned
+-----------------------------------------------------------------ColonLimitationsEnum
+Other
+Not Limited
+benign stricture
+inadequate bowel prep
+malignant stricture
+patient discomfort
+severe colitis
+unresolved loop
+clinical intention achieved
+-----------------------------------------------------------------ColonIndicationsEnum
+Other
+Abdominal pain
+Abnormality on CT / barium
+Anaemia
+Diarrhoea
+Melaena
+Stent change
+Stent placement
+Stent removal
+Weight loss
+BCSP
+Abdominal mass
+Abnormal sigmoidoscopy
+Chronic alternating diarrhoea / constipation Colorectal cancer - follow up
+Constipation - acute
+Constipation - chronic
+Defaecation disorder
+Diarrhoea - acute
+Diarrhoea - chronic
+Diarrhoea - chronic with blood
+FHx of colorectal cancer
+FOB +'ve
+IBD assessment / surveillance
+Polyposis syndrome
+PR bleeding - altered blood
+PR bleeding - anorectal
+Previous / known polyps
+Tumour assessment
+Stent dysfunction
+-----------------------------------------------------------------ColonDiagnosisLookupEnum
+Normal
+Other
+Anal fissure
+Angiodysplasia
+Colitis - ischemic
+Colitis - pseudomembranous
+Colitis - unspecified
+Colorectal cancer
+Crohn's - terminal ileum
+Crohn's colitis
+Diverticulosis
+Fistula
+Foreign body
+Haemorrhoids
+Lipoma
+Melanosis
+Parasites
+Pneumatosis coli
+Polyp/s
+Polyposis syndrome
+Postoperative appearance
+Proctitis
+Rectal ulcer
+Stricture - inflammatory
+Stricture - malignant
+Stricture - postoperative
+Ulcerative colitis
+Anastomotic stricture
+-----------------------------------------------------------------ColonTherapeuticLookupEnum
+None
+Other
+Argon beam photocoagulation
+Balloon dilation
+Banding of haemorrhoid
+Clip placement
+Endoloop placement
+Foreign body removal
+Injection therapy
+Marking / tattooing
+Polyp - cold biopsy
+Polyp - EMR
+Polyp - ESD
+Polyp - hot biopsy
+Polyp - snare cold
+Polyp - snare hot
+Stent change
+Stent placement
+Stent removal
+EMR
+ESD
+Heater probe
+Hot biopsy
+Polypectomy
+Radio frequency ablation
+-----------------------------------------------------------------ColonBiopsyEnum
+Terminal ileum
+Neo-terminal ileum
+Ileo-colon anastomosis
+Ascending Colon
+Hepatic flexure
+Transverse Colon
+Splenic flexure
+Descending Colon
+Sigmoid Colon
+Rectum
+Anus
+Pouch
+Caecum
+-----------------------------------------------------------------ColonBowelPrepEnum
+Not Specified excellent
+good
+fair
+inadequate
+-----------------------------------------------------------------FlexiExtentTypeEnum
+Anastomosis
+Transverse Colon
+Splenic flexure
+Sigmoid colon
+Rectum
+Pouch
+Anus
+Abandoned
+
+-----------------------------------------------------------------FlexiLimitationsEnum
+Other
+Not Limited
+benign stricture
+inadequate bowel prep
+malignant stricture
+patient discomfort
+severe colitis
+unresolved loop
+clinical intention achieved
+-----------------------------------------------------------------FlexiIndicationsEnum
+Other
+Abdominal pain
+Abnormality on CT / barium
+Anaemia
+Diarrhoea
+Stent change
+Stent placement
+Stent removal
+Weight loss
+BCSP
+Abdominal mass
+Abnormal sigmoidoscopy
+Chronic alternating diarrhoea / constipation
+Colorectal cancer - follow up
+Constipation - acute
+Constipation - chronic
+Defaecation disorder
+Diarrhoea - acute
+Diarrhoea - chronic
+Diarrhoea - chronic with blood
+FHx of colorectal cancer
+FOB +'ve
+IBD assessment / surveillance
+Polyposis syndrome
+PR bleeding - altered blood
+PR bleeding - anorectal
+Previous / known polyps
+Tumour assessment
+Stent dysfunction
+-----------------------------------------------------------------FlexiDiagnosisLookupEnum
+Normal
+Other
+Anal fissure
+Angiodysplasia
+Colitis - ischemic
+Colitis - pseudomembranous
+Colitis - unspecified
+Colorectal cancer
+Crohn's - terminal ileum
+Crohn's colitis
+Diverticulosis
+Fistula
+Foreign body
+Haemorrhoids
+Lipoma
+Melanosis
+Parasites
+Pneumatosis coli
+Polyp/s
+Polyposis syndrome
+Postoperative appearance
+Proctitis
+Rectal ulcer
+Stricture - inflammatory
+Stricture - malignant
+Stricture - postoperative
+Ulcerative colitis
+Anastomotic stricture
+-----------------------------------------------------------------FlexiTherapeuticLookupEnum
+None
+Other
+Argon beam photocoagulation
+Balloon dilation
+Banding of haemorrhoid
+Clip placement
+Endoloop placement
+Foreign body removal
+Injection therapy
+Marking / tattooing
+Polyp - cold biopsy
+Polyp - EMR
+Polyp - ESD
+Polyp - hot biopsy
+Polyp - snare cold
+Polyp - snare hot
+Stent change
+Stent placement
+Stent removal
+YAG laser
+Botox injection
+EMR
+ESD
+Heater probe
+Hot biopsy
+Polypectomy
+Radio frequency ablation
+Variceal sclerotherapy
+-----------------------------------------------------------------FlexiBiopsyEnum
+None
+Splenic flexure
+Descending Colon
+Sigmoid Colon
+Rectum
+Anus
+Pouch
+-----------------------------------------------------------------FlexiBowelPrepEnum
+Not Specified excellent
+good
+fair
+inadequate
+-----------------------------------------------------------------ERCPExtentTypeEnum
+Papilla
+Pancreatic duct
+Common bile duct
+CBD and PD
+Abandoned
+-----------------------------------------------------------------ERCPLimitationsEnum
+Other
+Not Limited
+benign stricture
+malignant stricture
+patient discomfort
+unresolved loop
+clinical intention achieved
+-----------------------------------------------------------------ERCPIndicationsEnum
+Abnormal liver enzymes
+Acute pancreatitis
+Ampullary mass
+Bile duct injury
+Bile duct leak
+Cholangitis
+Chronic pancreatitis
+Gallbladder mass
+Gallbladder polyp
+Hepatobiliary mass
+Jaundice
+Pancreatic mass
+Pancreatic pseudocyst
+Pancreatobiliary pain
+Papillary dysfunction
+Pre lap choledocholithiasis
+Primary sclerosing cholangitis
+Purulent cholangitis
+Stent dysfunction
+-----------------------------------------------------------------ERCPDiagnosisLookupEnum
+Anastomotic stricture
+Biliary fistula/leak
+Biliary occlusion
+Biliary stent occlusion
+Biliary stone(s)
+Biliary stricture
+Carolis disease
+Cholangiocarcinoma
+Choledochal cyst
+Cystic duct stones
+Duodenal diverticulum
+Gallbladder stone(s)
+Gallbladder tumor
+Hemobilia
+IPMT
+Mirizzi syndrome
+Pancreas annulare
+Pancreas divisum
+Pancreatic cyst
+Pancreatic duct fistula/leak
+Pancreatic duct injury
+Pancreatic duct stricture
+Pancreatic stent occlusion
+Pancreatic stone
+Pancreatic tumor
+Pancreatitis - acute
+Pancreatitis - chronic
+Papillary stenosis
+Papillary tumor
+Primary sclerosing cholangitis
+Suppurative cholangitis
+-----------------------------------------------------------------ERCPTherapeuticLookupEnum
+Argon beam photocoagulation
+Balloon dilation
+Polyp - EMR
+Polyp - ESD
+Polyp - hot biopsy
+Polyp - snare cold
+Polyp - snare hot
+Stent change
+Stent placement
+Stent removal
+YAG laser
+Balloon trawl
+Bougie dilation
+Brush cytology
+Cannulation
+Combined (rendezvous) proc
+Diagnostic cholangiogram
+Diagnostic pancreatogram
+Endoscopic cyst puncture
+Haemostasis
+Manometry
+Nasopancreatic / bilary drain Sphincterotomy
+Stent placement - CBD
+Stent placement - pancreas
+Stone extraction >=10mm
+Stone extraction <10mm
+Band ligation
+Botox injection
+EMR
+ESD
+Heater probe
+Hot biopsy
+Polypectomy
+Radio frequency ablation

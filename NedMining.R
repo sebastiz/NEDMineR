@@ -11,38 +11,88 @@ data_out <- dfw %>%
   nest(values)
 
 
+#Heirarchy of report synthesis
 
 
-c<- lapply(data_out$data, function(p)
-  unlist(p))
+ProcedureNameEnum<-as.list(data_out[[16,2]])
 
-
+#GeneralEnums
 SessionTypeEnum<-as.list(data_out[[2,2]])
-ExtentTypeEnum<-as.list(data_out[[3,2]])
-LimitationsEnum<-as.list(data_out[[4,2]])
 AdmissionTypeEnum<-as.list(data_out[[5,2]])
 UrgencyEnum<-as.list(data_out[[6,2]])
 ProcedureRoleTypeEnum<-as.list(data_out[[7,2]])
 EndoscopistRoleTypeEnum<-as.list(data_out[[8,2]])
 DiscomfortEnum<-as.list(data_out[[9,2]])
+AdverseEventEnum<-as.list(data_out[[14,2]])
+
+#OGDEnums
+ExtentTypeEnum<-as.list(data_out[[3,2]])
+LimitationsEnum<-as.list(data_out[[4,2]])
 IndicationsEnum<-as.list(data_out[[10,2]])
 DiagnosisLookupEnum<-as.list(data_out[[11,2]])
 TherapeuticLookupEnum<-as.list(data_out[[12,2]])
 BiopsyEnum<-as.list(data_out[[13,2]])
-AdverseEventEnum<-as.list(data_out[[14,2]])
-BowelPrepEnum<-as.list(data_out[[15,2]])
-ProcedureNameEnum<-as.list(data_out[[16,2]])
 GenderType<-as.list(data_out[[17,2]])
 YesNoEnum<-as.list(data_out[[18,2]])
 PolypSizeEnum<-as.list(data_out[[19,2]])
-TattooEnum<-as.list(data_out[[20,2]])
 TimeEnum<-as.list(data_out[[21,2]])
 DrugType<-as.list(data_out[[22,2]])
 YesNoEnum<-as.list(c("Yes","No"))
 
-#Creating the enums of enum
+#FlexiEnums
+ExtentTypeEnum<-as.list(data_out[[3,2]])
+LimitationsEnum<-as.list(data_out[[4,2]])
+IndicationsEnum<-as.list(data_out[[10,2]])
+DiagnosisLookupEnum<-as.list(data_out[[11,2]])
+TherapeuticLookupEnum<-as.list(data_out[[12,2]])
+BiopsyEnum<-as.list(data_out[[13,2]])
+GenderType<-as.list(data_out[[17,2]])
+YesNoEnum<-as.list(data_out[[18,2]])
+PolypSizeEnum<-as.list(data_out[[19,2]])
+TimeEnum<-as.list(data_out[[21,2]])
+DrugType<-as.list(data_out[[22,2]])
+YesNoEnum<-as.list(c("Yes","No"))
+BowelPrepEnum<-as.list(data_out[[15,2]])
+TattooEnum<-as.list(data_out[[20,2]])
+
+#ColonEnums
+ExtentTypeEnum<-as.list(data_out[[3,2]])
+LimitationsEnum<-as.list(data_out[[4,2]])
+IndicationsEnum<-as.list(data_out[[10,2]])
+DiagnosisLookupEnum<-as.list(data_out[[11,2]])
+TherapeuticLookupEnum<-as.list(data_out[[12,2]])
+BiopsyEnum<-as.list(data_out[[13,2]])
+GenderType<-as.list(data_out[[17,2]])
+YesNoEnum<-as.list(data_out[[18,2]])
+PolypSizeEnum<-as.list(data_out[[19,2]])
+TimeEnum<-as.list(data_out[[21,2]])
+DrugType<-as.list(data_out[[22,2]])
+YesNoEnum<-as.list(c("Yes","No"))
+BowelPrepEnum<-as.list(data_out[[15,2]])
+TattooEnum<-as.list(data_out[[20,2]])
+
+#ERCPEnums
+ExtentTypeEnum<-as.list(data_out[[3,2]])
+LimitationsEnum<-as.list(data_out[[4,2]])
+IndicationsEnum<-as.list(data_out[[10,2]])
+DiagnosisLookupEnum<-as.list(data_out[[11,2]])
+TherapeuticLookupEnum<-as.list(data_out[[12,2]])
+BiopsyEnum<-as.list(data_out[[13,2]])
+GenderType<-as.list(data_out[[17,2]])
+YesNoEnum<-as.list(data_out[[18,2]])
+PolypSizeEnum<-as.list(data_out[[19,2]])
+TimeEnum<-as.list(data_out[[21,2]])
+DrugType<-as.list(data_out[[22,2]])
+YesNoEnum<-as.list(c("Yes","No"))
+
+
+########################### Creating the General enums of enum ####################################################################################################################################### 
 PatientType<- paste(replicate(10,sample(paste("Gender: ",GenderType[[1]]),1)),replicate(10,sample(paste("Age: ",18:99))),replicate(10,sample(paste("Admission Type: ",AdmissionTypeEnum[[1]]),1)),replicate(10,sample(paste("Urgency: ",UrgencyEnum[[1]]),1,replace=F)))
 AdverseEventType<-replicate(10,sample(paste("Adverse Event: ",AdverseEventEnum[[1]]),1))
+
+
+
+
 TherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",TherapeuticLookupEnum[[1]]),1)),replicate(10,sample(paste("Biopsy: ",BiopsyEnum[[1]]),1)),replicate(10,sample(paste("Procedure Role: ",ProcedureRoleTypeEnum[[1]]),1)),replicate(10,sample(paste("PolypSize: ",PolypSizeEnum[[1]]),1)),replicate(10,sample(paste("Tattoo: ",TattooEnum[[1]]),1)))
 BiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(BiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
 
@@ -67,12 +117,12 @@ replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
 replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
 replicate(10,paste("Bowel Prep:",sample(BowelPrepEnum[[1]],1))),
 replicate(10,paste("Extent:",sample(ExtentTypeEnum[[1]],1))),
-paste("entonox",replicate(10,sample(YesNoEnum,1))),
-paste("antibioticGiven",replicate(10,sample(YesNoEnum,1))),
-      paste("generalAnaes",replicate(10,sample(YesNoEnum,1))),
-            paste("pharyngealAnaes",replicate(10,sample(YesNoEnum,1))),
+paste("entonox:",replicate(10,sample(YesNoEnum,1))),
+paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
+      paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
+            paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
                   paste("digitalRectalExamination",replicate(10,sample(YesNoEnum,1))),
-                        paste("magneticEndoscopeImagerUsed",replicate(10,sample(YesNoEnum,1))))
+                        paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
 
 
 UKDateType<-sample(seq(as.Date('1999/01/01'), as.Date('2000/01/01'), by="day"), 365)
@@ -86,4 +136,11 @@ TimeEnum<-str_extract(t," .*")
 SessionType<-paste(replicate(10,sample(ProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(hourTimeExtracted[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
 
 
-#I have a tibble of tibbles. I want to create a dataframe that samples from each of the nested tibbles once and creates a dataframe of samples where the column name is the
+
+
+
+
+#to Do:
+#Make the reports algorithmic so that the correct findings are for the correct procedures
+#Develop function for HES_ID
+#Dependent ENUMS
