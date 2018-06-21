@@ -131,9 +131,9 @@ OGDTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",OGDTherapeut
                        replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
                        replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
 
-OGDBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
+OGDBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum)),1),"Number of biopsies: ",sample(1:8))
 
-OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum,1))),
+OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum,2))),
                        replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum,1))))
 
 OGDIndicationType<-replicate(10,paste("Indications:",sample(OGDIndicationsEnum,1)))
