@@ -1,15 +1,14 @@
-
 #Source file (downloaded from https://www.jets.nhs.uk/NED/CMS_Documents/NED%20Terms%20in%20XML.xlsx)
 dfw <-read_excel("/home/rstudio/NEDMineR/data/NED Terms in XML.xlsx","NED Enumeration Values")
 library(readxl)
 library(stringr)
 library(dplyr)
 library(tidyverse)
-names(dfw)<-c("groups","values")
-dfw<-data.frame(dfw[1:2])
-data_out <- dfw %>%
-  group_by(groups) %>%
-  nest(values)
+# names(dfw)<-c("groups","values")
+# dfw<-data.frame(dfw[1:2])
+# data_out <- dfw %>%
+#   group_by(groups) %>%
+#   nest(values)
 
 #These terms are then separated manually into terms that are procedure specific 
 #and those that are non-specific into the text file called "/home/rstudio/NEDMineR/data/ProcedureSpecificValues"
@@ -35,101 +34,71 @@ ProcedureSpecifiValues <- as.list(ProcedureSpecifiValues)
 
 ##### LISTS- Sentence introduction #####
 # Distribute the reports so that there are empties and Normals
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
 
 
-#Heirarchy of report synthesis
-#Extent type ="Abandoned"
+#Create an empty dataframe
+ProcFrame <- as.data.frame(matrix(0, ncol = 1, nrow = 1000))
 
 #Get the raw terms from the text file
-ProcedureNameEnum<-as.list(data_out[[16,2]])
+ProcedureNameEnum<-as.list(c("OGD","FLEXI","ERCP","COLON"))
+ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) paste("Procedure: ",sample(ProcedureNameEnum,1)))
+#Heirarchy of report synthesis.
+#if not: Extent type ="Abandoned".
+#if biopsies taken and site.
+#Extent and biopsies should measure up OK.
 
-########################### GeneralEnums ###########################
-GeneralSessionTypeEnum<-as.list(data_out[[2,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralAdmissionTypeEnum<-as.list(data_out[[5,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralUrgencyEnum<-as.list(data_out[[6,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralProcedureRoleTypeEnum<-as.list(data_out[[7,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralEndoscopistRoleTypeEnum<-as.list(data_out[[8,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralDiscomfortEnum<-as.list(data_out[[9,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralAdverseEventEnum<-as.list(data_out[[14,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralGenderType<-as.list(data_out[[17,2]])#
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralYesNoEnum<-as.list(data_out[[18,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralTimeEnum<-as.list(data_out[[21,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralDrugType<-as.list(data_out[[22,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
-GeneralPolypSizeEnum<-as.list(data_out[[19,2]])
-FD_SentenceIntro<-ListContstructor("FD_SentenceIntro","FD_SentenceIntro1",ProcedureSpecifiValues)
+#For each row where Procedure=='OGD' add a sample to extentTypeEnum to the Extent Column
 
-########################### OGDEnums ###########################
-OGDExtentTypeEnum<-as.list(data_out[[3,2]])
+
+
+########################### GeneralEnums - these are from teh downloaded xlsx but eventually want to include these terms in the ProcedureSpecifValues file###########################
+GeneralSessionTypeEnum<-ListContstructor("GeneralSessionTypeEnum","GeneralAdmissionTypeEnum",ProcedureSpecifiValues)
+GeneralAdmissionTypeEnum<-ListContstructor("GeneralAdmissionTypeEnum","GeneralUrgencyEnum",ProcedureSpecifiValues)
+GeneralUrgencyEnum<-ListContstructor("GeneralUrgencyEnum","GeneralProcedureRoleTypeEnum",ProcedureSpecifiValues)
+GeneralProcedureRoleTypeEnum<-ListContstructor("GeneralProcedureRoleTypeEnum","GeneralEndoscopistRoleTypeEnum",ProcedureSpecifiValues)
+GeneralEndoscopistRoleTypeEnum<-ListContstructor("GeneralEndoscopistRoleTypeEnum","GeneralDiscomfortEnum",ProcedureSpecifiValues)
+GeneralDiscomfortEnum<-ListContstructor("GeneralDiscomfortEnum","GeneralAdverseEventEnum",ProcedureSpecifiValues)
+GeneralAdverseEventEnum<-ListContstructor("GeneralAdverseEventEnum","GeneralGenderType",ProcedureSpecifiValues)
+GeneralGenderType<-ListContstructor("GeneralGenderType","GeneralYesNoEnum",ProcedureSpecifiValues)
+GeneralYesNoEnum<-ListContstructor("GeneralYesNoEnum","GeneralTimeEnum",ProcedureSpecifiValues)
+GeneralTimeEnum<-ListContstructor("GeneralTimeEnum","GeneralDrugType",ProcedureSpecifiValues)
+GeneralDrugType<-ListContstructor("GeneralDrugType","GeneralPolypSizeEnum",ProcedureSpecifiValues)
+GeneralPolypSizeEnum<-ListContstructor("GeneralPolypSizeEnum","OGDExtentTypeEnum",ProcedureSpecifiValues)
+
+########################### OGDEnums from here onwards is included in the the ProcedureSpecifValues file###########################
 OGDExtentTypeEnum<-ListContstructor("OGDExtentTypeEnum","OGDLimitationsEnum",ProcedureSpecifiValues)
-OGDLimitationsEnum<-as.list(data_out[[4,2]])
 OGDLimitationsEnum<-ListContstructor("OGDLimitationsEnum","OGDIndicationsEnum",ProcedureSpecifiValues)
-OGDIndicationsEnum<-as.list(data_out[[10,2]])
 OGDIndicationsEnum<-ListContstructor("OGDIndicationsEnum","OGDDiagnosisLookupEnum",ProcedureSpecifiValues)
-OGDDiagnosisLookupEnum<-as.list(data_out[[11,2]])
 OGDDiagnosisLookupEnum<-ListContstructor("OGDDiagnosisLookupEnum","OGDTherapeuticLookupEnum",ProcedureSpecifiValues)
-OGDTherapeuticLookupEnum<-as.list(data_out[[12,2]])
 OGDTherapeuticLookupEnum<-ListContstructor("OGDTherapeuticLookupEnum","OGDBiopsyEnum",ProcedureSpecifiValues)
-OGDBiopsyEnum<-as.list(data_out[[13,2]])
 OGDBiopsyEnum<-ListContstructor("OGDBiopsyEnum","ColonExtentTypeEnum",ProcedureSpecifiValues)
 
 ########################### FlexiEnums ###########################
-FlexiExtentTypeEnum<-as.list(data_out[[3,2]])
 FlexiExtentTypeEnum<-ListContstructor("FlexiExtentTypeEnum","FlexiLimitationsEnum",ProcedureSpecifiValues)
-FlexiLimitationsEnum<-as.list(data_out[[4,2]])
 FlexiLimitationsEnum<-ListContstructor("FlexiLimitationsEnum","FlexiIndicationsEnum",ProcedureSpecifiValues)
-FlexiIndicationsEnum<-as.list(data_out[[10,2]])
 FlexiIndicationsEnum<-ListContstructor("FlexiIndicationsEnum","FlexiDiagnosisLookupEnum",ProcedureSpecifiValues)
-FlexiDiagnosisLookupEnum<-as.list(data_out[[11,2]])
 FlexiDiagnosisLookupEnum<-ListContstructor("FlexiDiagnosisLookupEnum","FlexiTherapeuticLookupEnum",ProcedureSpecifiValues)
-FlexiTherapeuticLookupEnum<-as.list(data_out[[12,2]])
 FlexiTherapeuticLookupEnum<-ListContstructor("FlexiTherapeuticLookupEnum","FlexiBiopsyEnum",ProcedureSpecifiValues)
-FlexiBiopsyEnum<-as.list(data_out[[13,2]])
 FlexiBiopsyEnum<-ListContstructor("FlexiBiopsyEnum","FlexiBowelPrepEnum",ProcedureSpecifiValues)
-FlexiBowelPrepEnum<-as.list(data_out[[15,2]])
 FlexiBowelPrepEnum<-ListContstructor("FlexiBowelPrepEnum","FlexiTattooEnum",ProcedureSpecifiValues)
-FlexiTattooEnum<-as.list(data_out[[20,2]])
 FlexiTattooEnum<-ListContstructor("FlexiTattooEnum","ERCPExtentTypeEnum",ProcedureSpecifiValues)
 
 ########################### ColonEnums ###########################
-ColonExtentTypeEnum<-as.list(data_out[[3,2]])
+
 ColonExtentTypeEnum<-ListContstructor("ColonExtentTypeEnum","ColonLimitationsEnum",ProcedureSpecifiValues)
-ColonLimitationsEnum<-as.list(data_out[[4,2]])
 ColonLimitationsEnum<-ListContstructor("ColonLimitationsEnum","ColonIndicationsEnum",ProcedureSpecifiValues)
-ColonIndicationsEnum<-as.list(data_out[[10,2]])
 ColonIndicationsEnum<-ListContstructor("ColonIndicationsEnum","ColonDiagnosisLookupEnum",ProcedureSpecifiValues)
-ColonDiagnosisLookupEnum<-as.list(data_out[[11,2]])
 ColonDiagnosisLookupEnum<-ListContstructor("ColonDiagnosisLookupEnum","ColonTherapeuticLookupEnum",ProcedureSpecifiValues)
-ColonTherapeuticLookupEnum<-as.list(data_out[[12,2]])
 ColonTherapeuticLookupEnum<-ListContstructor("ColonTherapeuticLookupEnum","ColonBiopsyEnum",ProcedureSpecifiValues)
-ColonBiopsyEnum<-as.list(data_out[[13,2]])
 ColonBiopsyEnum<-ListContstructor("ColonBiopsyEnum","ColonBowelPrepEnum",ProcedureSpecifiValues)
-ColonBowelPrepEnum<-as.list(data_out[[15,2]])
 ColonBowelPrepEnum<-ListContstructor("ColonBowelPrepEnum","ColonTattooEnum",ProcedureSpecifiValues)
-ColonTattooEnum<-as.list(data_out[[20,2]])
 ColonTattooEnum<-ListContstructor("ColonTattooEnum","FlexiExtentTypeEnum",ProcedureSpecifiValues)
 
 ########################### ERCPEnum s###########################
-ERCPExtentTypeEnum<-as.list(data_out[[3,2]])
 ERCPExtentTypeEnum<-ListContstructor("ERCPExtentTypeEnum","ERCPLimitationsEnum",ProcedureSpecifiValues)
-ERCPLimitationsEnum<-as.list(data_out[[4,2]])
 ERCPLimitationsEnum<-ListContstructor("ERCPLimitationsEnum","ERCPIndicationsEnum",ProcedureSpecifiValues)
-ERCPIndicationsEnum<-as.list(data_out[[10,2]])
 ERCPIndicationsEnum<-ListContstructor("ERCPIndicationsEnum","ERCPDiagnosisLookupEnum",ProcedureSpecifiValues)
-ERCPDiagnosisLookupEnum<-as.list(data_out[[11,2]])
 ERCPDiagnosisLookupEnum<-ListContstructor("ERCPDiagnosisLookupEnum","ERCPTherapeuticLookupEnum",ProcedureSpecifiValues)
-ERCPTherapeuticLookupEnum<-as.list(data_out[[12,2]])
 ERCPTherapeuticLookupEnum<-ListContstructor("ERCPTherapeuticLookupEnum","END",ProcedureSpecifiValues)
 
 
@@ -146,7 +115,7 @@ ERCPTherapeuticLookupEnum<-ListContstructor("ERCPTherapeuticLookupEnum","END",Pr
 ########################### Creating the General enums of enum ####################################################################################################################################### 
 
 
-PatientType<- paste(replicate(10,sample(paste("Gender: ",GenderType[[1]]),1)),replicate(10,sample(paste("Age: ",18:99))),replicate(10,sample(paste("Admission Type: ",AdmissionTypeEnum[[1]]),1)),replicate(10,sample(paste("Urgency: ",UrgencyEnum[[1]]),1,replace=F)))
+PatientType<- paste(replicate(10,sample(paste("Gender: ",GenderType[[1]]),1)),replicate(10,paste("Age: ",sample(18:99))),replicate(10,sample(paste("Admission Type: ",AdmissionTypeEnum[[1]]),1)),replicate(10,sample(paste("Urgency: ",UrgencyEnum[[1]]),1,replace=F)))
 AdverseEventType<-replicate(10,sample(paste("Adverse Event: ",AdverseEventEnum[[1]]),1))
 UKDateType<-sample(seq(as.Date('1999/01/01'), as.Date('2000/01/01'), by="day"), 365)
 hourTime<-(seq.POSIXt(as.POSIXct(Sys.Date()),
@@ -157,69 +126,132 @@ t<-as.character(hourTime)
 TimeEnum<-str_extract(t," .*")
 
 ########################### Creating the OGD enums of enum ####################################################################################################################################### 
-OGDTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",OGDTherapeuticLookupEnum[[1]]),1)),
-                       replicate(10,sample(paste("Biopsy: ",OGDBiopsyEnum[[1]]),1)),
+OGDTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",OGDTherapeuticLookupEnum),1)),
+                       replicate(10,sample(paste("Biopsy: ",OGDBiopsyEnum),1)),
                        replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
                        replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
 
 OGDBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
 
-OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum[[1]],1))),
-                       replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]]),1)))
+OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum,1))),
+                       replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum,1))))
 
-OGDIndicationType<-replicate(10,paste("Indications:",sample(OGDIndicationsEnum[[1]],1)))
-OGDLimitationType<-replicate(10,paste("Limitations:",sample(OGDLimitationsEnum[[1]],1)))
+OGDIndicationType<-replicate(10,paste("Indications:",sample(OGDIndicationsEnum,1)))
+OGDLimitationType<-replicate(10,paste("Limitations:",sample(OGDLimitationsEnum,1)))
 
-OGDStaffType<-paste(replicate(10,paste("Limitations:",sample(OGDTherapeuticLookupEnum[[1]],1))),
+OGDStaffType<-paste(replicate(10,paste("Therapy:",sample(OGDTherapeuticLookupEnum,1))),
                        replicate(10,paste("Endoscopist Role:",sample(GeneralEndoscopistRoleTypeEnum[[1]],1))),
                        replicate(10,paste("Procedure Role:",sample(GeneralProcedureRoleTypeEnum[[1]],1))),
-                       replicate(10,paste("Extent Type:",sample(OGDExtentTypeEnum[[1]],1))),
-                       replicate(10,paste("Limitations:",sample(OGDLimitationsTypeEnum[[1]],1))),
-                 "jManoeuvre:",paste("jManoeuvre:",sample(YesNoEnum,1)))
+                       replicate(10,paste("Extent Type:",sample(OGDExtentTypeEnum,1))),
+                       replicate(10,sample(OGDLimitationType,1)),
+                       replicate(10,paste("jManoeuvre:",sample(YesNoEnum,1))))
+
+
+OGDProcedureType<- paste(replicate(10,sample(PatientType,1)),
+                      replicate(10,sample(paste("Meds:",DrugType[[1]])),1),
+                      replicate(10,sample(OGDStaffType,1)),
+                      replicate(10,sample(OGDIndicationType,1)),
+                      replicate(10,sample(OGDLimitationType,1)),
+                      replicate(10,sample(OGDBiopsyType,1)),
+                      replicate(10,sample(AdverseEventType,1)),
+                      replicate(10,sample(OGDDiagnoseType,1)),
+                      replicate(10,paste("Procedure:OGD")),
+                      replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                      replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                      replicate(10,paste("Extent:",sample(OGDExtentTypeEnum,1))),
+                      paste("entonox:",replicate(10,sample(YesNoEnum,1))),
+                      paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
+                      paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
+                      paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
+                      paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
 
 
 
 ########################### Creating the Flexi enums of enum ####################################################################################################################################### 
-OGDTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",OGDTherapeuticLookupEnum[[1]]),1)),
-                       replicate(10,sample(paste("Biopsy: ",OGDBiopsyEnum[[1]]),1)),
-                       replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
-                       replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
+FlexiTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",FlexiTherapeuticLookupEnum),1)),
+                            replicate(10,sample(paste("Biopsy: ",FlexiBiopsyEnum),1)),
+                            replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
+                            replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
 
-OGDBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
+FlexiBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(FlexiBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
 
-OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum[[1]],1))),
-                       replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]]),1)))
+FlexiDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(FlexiDiagnosisLookupEnum,1))),
+                         replicate(10,paste("Biopsy site:",sample(FlexiBiopsyEnum,1))))
 
-OGDIndicationType<-replicate(10,paste("Indications:",sample(OGDIndicationsEnum[[1]],1)))
-OGDLimitationType<-replicate(10,paste("Limitations:",sample(OGDLimitationsEnum[[1]],1)))
+FlexiIndicationType<-replicate(10,paste("Indications:",sample(FlexiIndicationsEnum,1)))
+FlexiLimitationType<-replicate(10,paste("Limitations:",sample(FlexiLimitationsEnum,1)))
 
-OGDStaffType<-paste(replicate(10,paste("Limitations:",sample(OGDTherapeuticLookupEnum[[1]],1))),
+FlexiStaffType<-paste(replicate(10,paste("Therapy:",sample(FlexiTherapeuticLookupEnum,1))),
                       replicate(10,paste("Endoscopist Role:",sample(GeneralEndoscopistRoleTypeEnum[[1]],1))),
                       replicate(10,paste("Procedure Role:",sample(GeneralProcedureRoleTypeEnum[[1]],1))),
-                      replicate(10,paste("Extent Type:",sample(OGDExtentTypeEnum[[1]],1))),
-                      replicate(10,paste("Limitations:",sample(OGDLimitationsTypeEnum[[1]],1))),
-                      "jManoeuvre:",paste("jManoeuvre:",sample(YesNoEnum,1)))
+                      replicate(10,paste("Extent Type:",sample(FlexiExtentTypeEnum,1))),
+                      replicate(10,sample(FlexiLimitationType,1)),
+                      replicate(10,paste("jManoeuvre:",sample(YesNoEnum,1))))
+
+
+FlexiProcedureType<- paste(replicate(10,sample(PatientType,1)),
+                           replicate(10,sample(paste("Meds:",DrugType[[1]])),1),
+                           replicate(10,sample(FlexiStaffType,1)),
+                           replicate(10,sample(FlexiIndicationType,1)),
+                           replicate(10,sample(FlexiLimitationType,1)),
+                           replicate(10,sample(FlexiBiopsyType,1)),
+                           replicate(10,sample(AdverseEventType,1)),
+                           replicate(10,sample(FlexiDiagnoseType,1)),
+                           replicate(10,paste("Procedure:Flexi")),
+                           replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                           replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                           replicate(10,paste("Extent:",sample(FlexiExtentTypeEnum,1))),
+                           paste("entonox:",replicate(10,sample(YesNoEnum,1))),
+                           paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
+                           paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
+                           paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
+                           paste("digitalRectalExamination",replicate(10,sample(YesNoEnum,1))),
+                           paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
+
 
 ########################### Creating the Colon enums of enum ####################################################################################################################################### 
-OGDTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",OGDTherapeuticLookupEnum[[1]]),1)),
-                      replicate(10,sample(paste("Biopsy: ",OGDBiopsyEnum[[1]]),1)),
-                      replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
-                      replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
+ColonTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",ColonTherapeuticLookupEnum),1)),
+                            replicate(10,sample(paste("Biopsy: ",ColonBiopsyEnum),1)),
+                            replicate(10,sample(paste("Procedure Role: ",GeneralProcedureRoleTypeEnum[[1]]),1)),
+                            replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)))
 
-OGDBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
+ColonBiopsyType<-paste(replicate(10,paste("Biopsy site:",sample(ColonBiopsyEnum[[1]])),1),"Number of biopsies: ",sample(1:8))
 
-OGDDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum[[1]],1))),
-                      replicate(10,paste("Biopsy site:",sample(OGDBiopsyEnum[[1]]),1)))
+ColonDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(ColonDiagnosisLookupEnum,1))),
+                         replicate(10,paste("Biopsy site:",sample(ColonBiopsyEnum,1))))
 
-OGDIndicationType<-replicate(10,paste("Indications:",sample(OGDIndicationsEnum[[1]],1)))
-OGDLimitationType<-replicate(10,paste("Limitations:",sample(OGDLimitationsEnum[[1]],1)))
+ColonIndicationType<-replicate(10,paste("Indications:",sample(ColonIndicationsEnum,1)))
+ColonLimitationType<-replicate(10,paste("Limitations:",sample(ColonLimitationsEnum,1)))
 
-OGDStaffType<-paste(replicate(10,paste("Limitations:",sample(OGDTherapeuticLookupEnum[[1]],1))),
+ColonStaffType<-paste(replicate(10,paste("Therapy:",sample(ColonTherapeuticLookupEnum,1))),
                       replicate(10,paste("Endoscopist Role:",sample(GeneralEndoscopistRoleTypeEnum[[1]],1))),
                       replicate(10,paste("Procedure Role:",sample(GeneralProcedureRoleTypeEnum[[1]],1))),
-                      replicate(10,paste("Extent Type:",sample(OGDExtentTypeEnum[[1]],1))),
-                      replicate(10,paste("Limitations:",sample(OGDLimitationType[[1]],1))),
-                      "jManoeuvre:",paste("jManoeuvre:",sample(YesNoEnum,1)))
+                      replicate(10,paste("Extent Type:",sample(ColonExtentTypeEnum,1))),
+                      replicate(10,sample(ColonLimitationType,1)),
+                      replicate(10,paste("jManoeuvre:",sample(YesNoEnum,1))))
+
+
+ColonProcedureType<- paste(replicate(10,sample(PatientType,1)),
+                           replicate(10,sample(paste("Meds:",DrugType[[1]])),1),
+                           replicate(10,sample(ColonStaffType,1)),
+                           replicate(10,sample(ColonIndicationType,1)),
+                           replicate(10,sample(ColonLimitationType,1)),
+                           replicate(10,sample(ColonBiopsyType,1)),
+                           replicate(10,sample(AdverseEventType,1)),
+                           replicate(10,sample(ColonDiagnoseType,1)),
+                           replicate(10,paste("Procedure:Colon")),
+                           replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                           replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                           replicate(10,paste("Extent:",sample(ColonExtentTypeEnum,1))),
+                           paste("entonox:",replicate(10,sample(YesNoEnum,1))),
+                           paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
+                           paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
+                           paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
+                           paste("digitalRectalExamination",replicate(10,sample(YesNoEnum,1))),
+                           paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
+                           
+
+
 
 ########################### Creating the ERCP enums of enum ####################################################################################################################################### 
 ERCPTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",ERCPTherapeuticLookupEnum[[1]]),1)),
@@ -227,55 +259,63 @@ ERCPTherapeuticType<-paste(replicate(10,sample(paste("Therapeutic: ",ERCPTherape
                       replicate(10,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)),
                       replicate(10,sample(paste("Tattoo: ",TattooEnum[[1]]),1)))
 
-DiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(DiagnosisLookupEnum[[1]],1))),
-                      replicate(10,paste("Tattoo:",sample(TattooEnum[[1]],1))),
-                      replicate(10,paste("Biopsy site:",sample(BiopsyEnum[[1]]),1)))
+ERCPDiagnoseType<-paste(replicate(10,paste("Diagnosis:",sample(ERCPDiagnosisLookupEnum,1))))
 
-IndicationType<-replicate(10,paste("Indications:",sample(IndicationsEnum[[1]],1)))
-LimitationType<-replicate(10,paste("Limitations:",sample(LimitationsEnum[[1]],1)))
+ERCPIndicationType<-replicate(10,paste("Indications:",sample(ERCPIndicationsEnum,1)))
+ERCPLimitationType<-replicate(10,paste("Limitations:",sample(ERCPLimitationsEnum,1)))
 
-StaffType<-paste(replicate(10,paste("Limitations:",sample(TherapeuticLookupEnum[[1]],1))),
+ERCPStaffType<-paste(replicate(10,paste("Limitations:",sample(ERCPTherapeuticLookupEnum,1))),
                       replicate(10,paste("Endoscopist Role:",sample(EndoscopistRoleTypeEnum[[1]],1))),
                       replicate(10,paste("Procedure Role:",sample(ProcedureRoleTypeEnum[[1]],1))),
-                      replicate(10,paste("Extent Type:",sample(ExtentTypeEnum[[1]],1))),
-                      replicate(10,paste("Limitations:",sample(ExtentTypeEnum[[1]],1))),
-                      "jManoeuvre:",paste("jManoeuvre:",sample(YesNoEnum,1)))
+                      replicate(10,paste("Extent Type:",sample(ERCPExtentTypeEnum[[1]],1))),
+                      replicate(10,paste("Limitations:",sample(ERCPExtentTypeEnum,1))))
+
+
+ERCPProcedureType<- paste(replicate(10,sample(PatientType,1)),
+                          replicate(10,sample(paste("Meds:",DrugType[[1]])),1),
+                          replicate(10,sample(ERCPStaffType,1)),
+                          replicate(10,sample(ERCPIndicationType,1)),
+                          replicate(10,sample(ERCPLimitationType,1)),
+                          replicate(10,sample(AdverseEventType,1)),
+                          replicate(10,sample(ERCPDiagnoseType,1)),
+                          replicate(10,paste("Procedure:ERCP")),
+                          replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                          replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
+                          replicate(10,paste("Extent:",sample(ERCPExtentTypeEnum,1))),
+                          paste("entonox:",replicate(10,sample(YesNoEnum,1))),
+                          paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
+                          paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
+                          paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
+                          paste("digitalRectalExamination",replicate(10,sample(YesNoEnum,1))),
+                          paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
 
 
 
 
+########################### Putting together as the Session type  ####################################################################################################################################### 
 
 
 
-
-ProcedureType<- paste(replicate(10,sample(PatientType,1)),
-replicate(10,sample(DrugType[[1]]),1),
-replicate(10,sample(StaffType,1)),
-replicate(10,sample(IndicationType,1)),
-replicate(10,sample(LimitationType,1)),
-replicate(10,sample(BiopsyType,1)),
-replicate(10,sample(AdverseEventType,1)),
-replicate(10,sample(DiagnoseType,1)),
-replicate(10,paste("Procedure:",sample(ProcedureNameEnum[[1]],1))),
-replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
-replicate(10,paste("Discomfort:",sample(DiscomfortEnum[[1]],1))),
-replicate(10,paste("Bowel Prep:",sample(BowelPrepEnum[[1]],1))),
-replicate(10,paste("Extent:",sample(ExtentTypeEnum[[1]],1))),
-paste("entonox:",replicate(10,sample(YesNoEnum,1))),
-paste("antibioticGiven:",replicate(10,sample(YesNoEnum,1))),
-      paste("generalAnaes:",replicate(10,sample(YesNoEnum,1))),
-            paste("pharyngealAnaes:",replicate(10,sample(YesNoEnum,1))),
-                  paste("digitalRectalExamination",replicate(10,sample(YesNoEnum,1))),
-                        paste("magneticEndoscopeImagerUsed:",replicate(10,sample(YesNoEnum,1))))
+OGDSessionType<-paste(replicate(10,sample(OGDProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(TimeEnum[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
+FlexiSessionType<-paste(replicate(10,sample(FlexiProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(TimeEnum[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
+ColonSessionType<-paste(replicate(10,sample(ColonProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(TimeEnum[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
+ERCPSessionType<-paste(replicate(10,sample(ERCPProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(TimeEnum[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
 
 
 
+ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Procedure"]),sample(OGDSessionType,1),
+                                   ifelse(grepl("COLON",x["Procedure"]),sample(ColonSessionType,1),
+                                          ifelse(grepl("FLEXI",x["Procedure"]),sample(FlexiSessionType,1),
+                                                 ifelse(grepl("ERCP",x["Procedure"]),sample(ERCPSessionType,1),""))))
+})
 
-SessionType<-paste(replicate(10,sample(ProcedureType,1)),replicate(10,sample(UKDateType, 12)),replicate(10,sample(hourTimeExtracted[[1]],1)),replicate(10,sample(SessionTypeEnum[[1]],1)))
+#Then fill the rest of the columns with the relevant findings 
 
-
+#Then use the HES_ID.
+#Then see if can merge with some of the HES dataset
+#Then use EndoMineR to see if can develop some functions for complications 
+       
+     
 #to Do:
-#Export terms from the text file to the raw Enums
-#Then convert all the names from the enums of enums and make sure it makes sense
-#Then finish the ProcedureType enums and then run the whole thing
+#Algorithm the Enums
 #Then see if can incorporate HES_ID's and take it from there

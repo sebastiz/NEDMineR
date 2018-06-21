@@ -1,3 +1,72 @@
+-----------------------------------------------------------------GeneralSessionTypeEnum
+Dedicated Training List
+Adhoc Training List
+Service List
+-----------------------------------------------------------------GeneralAdmissionTypeEnum
+Not Specified
+Inpatient
+Outpatient
+-----------------------------------------------------------------GeneralUrgencyEnum
+Not Specified
+Routine       
+Urgent        
+Emergency     
+Surveillance
+-----------------------------------------------------------------GeneralProcedureRoleTypeEnum
+Independent (no trainer) 
+Was observed             
+Was assisted physically  
+I observed               
+I assisted physically 
+-----------------------------------------------------------------GeneralEndoscopistRoleTypeEnum
+Trainer     
+Trainee     
+Independent
+-----------------------------------------------------------------GeneralDiscomfortEnum
+Not Specified 
+Comfortable   
+Minimal       
+Mild          
+Moderate      
+Severe
+-----------------------------------------------------------------GeneralAdverseEventEnum
+None                   
+Other                  
+Ventilation            
+Perforation of lumen   
+Bleeding               
+O2 desaturation        
+Flumazenil             
+Naloxone              
+Consent signed in room 
+Withdrawal of consent  
+Unplanned admission    
+Unsupervised trainee   
+Death                 
+Pancreatitis 
+-----------------------------------------------------------------GeneralGenderType
+Male          
+Female        
+Unknown       
+Indeterminate
+-----------------------------------------------------------------GeneralYesNoEnum
+Not Specified 
+No            
+Yes
+-----------------------------------------------------------------GeneralTimeEnum
+AMPM
+-----------------------------------------------------------------GeneralDrugType
+pethidine           
+midazolam           
+fentanyl            
+buscopan            
+propofol            
+noDrugsAdministered
+-----------------------------------------------------------------GeneralPolypSizeEnum
+ItemLessThan10mm 
+Item10to19mm     
+Item20OrLargermm
+
 -----------------------------------------------------------------OGDExtentTypeEnum
 OGDExtentTypeEnum
 Stomach
@@ -126,7 +195,7 @@ Oesophagus
 Stomach
 Duodenal bulb
 D2 - 2nd part of duodenum
---------------------------------------------------ColonExtentTypeEnum
+-----------------------------------------------------------------ColonExtentTypeEnum
 Anastomosis
 Transverse Colon
 Terminal ileum
