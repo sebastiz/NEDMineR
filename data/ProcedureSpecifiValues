@@ -126,12 +126,7 @@ Oesophagus
 Stomach
 Duodenal bulb
 D2 - 2nd part of duodenum
------------------------------------------------------------------OGDBowelPrepEnum
-Not Specified excellent
-good
-fair
-inadequate
------------------------------------------------------------------ColonExtentTypeEnum
+--------------------------------------------------ColonExtentTypeEnum
 Anastomosis
 Transverse Colon
 Terminal ileum
@@ -261,6 +256,10 @@ Not Specified excellent
 good
 fair
 inadequate
+-----------------------------------------------------------------ColonTattooEnum
+No
+Yes
+Previously Tattooed
 -----------------------------------------------------------------FlexiExtentTypeEnum
 Anastomosis
 Transverse Colon
@@ -270,7 +269,6 @@ Rectum
 Pouch
 Anus
 Abandoned
-
 -----------------------------------------------------------------FlexiLimitationsEnum
 Other
 Not Limited
@@ -382,6 +380,10 @@ Not Specified excellent
 good
 fair
 inadequate
+-----------------------------------------------------------------FlexiTattooEnum
+No
+Yes
+Previously Tattooed
 -----------------------------------------------------------------ERCPExtentTypeEnum
 Papilla
 Pancreatic duct
@@ -483,3 +485,4 @@ Heater probe
 Hot biopsy
 Polypectomy
 Radio frequency ablation
+-----------------------------------------------------------------END
