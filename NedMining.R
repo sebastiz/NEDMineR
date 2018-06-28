@@ -63,7 +63,14 @@ GeneralAdverseEventEnum<-ListContstructor("GeneralAdverseEventEnum","GeneralGend
 GeneralGenderType<-ListContstructor("GeneralGenderType","GeneralYesNoEnum",ProcedureSpecifiValues)
 GeneralYesNoEnum<-ListContstructor("GeneralYesNoEnum","GeneralTimeEnum",ProcedureSpecifiValues)
 GeneralTimeEnum<-ListContstructor("GeneralTimeEnum","GeneralDrugType",ProcedureSpecifiValues)
-GeneralDrugType<-ListContstructor("GeneralDrugType","GeneralPolypSizeEnum",ProcedureSpecifiValues)
+GeneralDrugType<-ListContstructor("GeneralDrugType","GeneralPolypSizeEnum",ProcedureSpecifiValues) replicate(10,sample(paste("Pethidine: ",sample(seq(12.5,100,12.5),1),"mcg")),1),
+replicate(10,sample(paste("Midazolam: ",sample(seq(0.5,10,0.5),1),"mg")),1),
+replicate(10,sample(paste("Fentanyl: ",sample(seq(12.5,100,12.5),1),"mg")),1),
+replicate(10,sample(paste("Buscopan: ",sample(seq(10,30,10),1),"mg")),1),
+replicate(10,sample(paste("Propofol: ",sample(seq(12.5,100,12.5),1),"mg")),1),
+paste("entonox:",replicate(10,sample(GeneralYesNoEnum,1))),
+paste("generalAnaes:",replicate(10,sample(GeneralYesNoEnum,1))),
+paste("pharyngealAnaes:",replicate(10,sample(GeneralYesNoEnum,1))),
 GeneralPolypSizeEnum<-ListContstructor("GeneralPolypSizeEnum","OGDTattooEnum",ProcedureSpecifiValues)
 
 
@@ -120,7 +127,7 @@ ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Proc
      
 #to Do:
 #How to split the Endoscopy into separate columns ?Using EndoMineR
-mywords<-c("Gender","Age","Admission Type","Urgency","Meds",
+mywords<-c("Gender","Age","Admission Type","Urgency","Pethidine","Midazolam","Fentanyl","Buscopan","Propofol",
                  "Therapy","Biopsy","PolypSize","Tattoo:","Endoscopist Role","Procedure Role","Extent Type",
                  "jManoeuvre","Indications", "Limitations","Biopsy site","Number of biopsies:","Adverse Event",
                  "Diagnosis","Biopsy site:","Procedure","Discomfort","Discomfort","Extent",
