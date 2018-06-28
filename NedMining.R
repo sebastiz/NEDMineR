@@ -48,7 +48,8 @@ ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) paste("Procedure: ",sample(
 #if biopsies taken and site.
 #Extent and biopsies should measure up OK.
 
-#For each row where Procedure=='OGD' add a sample to extentTypeEnum to the Extent Column
+#Number of records to generate
+NumRec<-1000
 
 
 
@@ -63,14 +64,7 @@ GeneralAdverseEventEnum<-ListContstructor("GeneralAdverseEventEnum","GeneralGend
 GeneralGenderType<-ListContstructor("GeneralGenderType","GeneralYesNoEnum",ProcedureSpecifiValues)
 GeneralYesNoEnum<-ListContstructor("GeneralYesNoEnum","GeneralTimeEnum",ProcedureSpecifiValues)
 GeneralTimeEnum<-ListContstructor("GeneralTimeEnum","GeneralDrugType",ProcedureSpecifiValues)
-GeneralDrugType<-ListContstructor("GeneralDrugType","GeneralPolypSizeEnum",ProcedureSpecifiValues) replicate(10,sample(paste("Pethidine: ",sample(seq(12.5,100,12.5),1),"mcg")),1),
-replicate(10,sample(paste("Midazolam: ",sample(seq(0.5,10,0.5),1),"mg")),1),
-replicate(10,sample(paste("Fentanyl: ",sample(seq(12.5,100,12.5),1),"mg")),1),
-replicate(10,sample(paste("Buscopan: ",sample(seq(10,30,10),1),"mg")),1),
-replicate(10,sample(paste("Propofol: ",sample(seq(12.5,100,12.5),1),"mg")),1),
-paste("entonox:",replicate(10,sample(GeneralYesNoEnum,1))),
-paste("generalAnaes:",replicate(10,sample(GeneralYesNoEnum,1))),
-paste("pharyngealAnaes:",replicate(10,sample(GeneralYesNoEnum,1))),
+GeneralDrugType<-ListContstructor("GeneralDrugType","GeneralPolypSizeEnum",ProcedureSpecifiValues) 
 GeneralPolypSizeEnum<-ListContstructor("GeneralPolypSizeEnum","OGDTattooEnum",ProcedureSpecifiValues)
 
 
@@ -78,8 +72,8 @@ GeneralPolypSizeEnum<-ListContstructor("GeneralPolypSizeEnum","OGDTattooEnum",Pr
 ########################### Creating the General enums of enum ####################################################################################################################################### 
 
 
-PatientType<- paste(replicate(10,sample(paste("Gender: ",GeneralGenderType),1)),replicate(10,paste("Age: ",sample(18:99))),replicate(10,sample(paste("Admission Type: ",GeneralAdmissionTypeEnum),1)),replicate(10,sample(paste("Urgency: ",GeneralUrgencyEnum),1,replace=F)))
-AdverseEventType<-replicate(10,sample(paste("Adverse Event: ",GeneralAdverseEventEnum[[1]]),1))
+PatientType<- paste(replicate(NumRec,sample(paste("Gender: ",GeneralGenderType),1)),replicate(NumRec,paste("Age: ",sample(18:99))),replicate(NumRec,sample(paste("Admission Type: ",GeneralAdmissionTypeEnum),1)),replicate(NumRec,sample(paste("Urgency: ",GeneralUrgencyEnum),1,replace=F)))
+AdverseEventType<-replicate(NumRec,sample(paste("Adverse Event: ",GeneralAdverseEventEnum[[1]]),1))
 UKDateType<-sample(seq(as.Date('1999/01/01'), as.Date('2000/01/01'), by="day"), 365)
 hourTime<-(seq.POSIXt(as.POSIXct(Sys.Date()),
                       as.POSIXct(Sys.Date()+1),
@@ -101,22 +95,23 @@ source("/home/rstudio/NEDMineR/Colon.R")
 source("/home/rstudio/NEDMineR/ERCP.R")
 
 
-OGDSessionType<-paste(replicate(10,sample(OGDProcedureType,1)),replicate(10,paste("Date: ",sample(UKDateType, 12))),replicate(10,paste("Time: ",sample(TimeEnum,1))),replicate(10,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-FlexiSessionType<-paste(replicate(10,sample(FlexiProcedureType,1)),replicate(10,paste("Date: ",sample(UKDateType, 12))),replicate(10,paste("Time: ",sample(TimeEnum,1))),replicate(10,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-ColonSessionType<-paste(replicate(10,sample(ColonProcedureType,1)),replicate(10,paste("Date: ",sample(UKDateType, 12))),replicate(10,paste("Time: ",sample(TimeEnum,1))),replicate(10,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-ERCPSessionType<-paste(replicate(10,sample(ERCPProcedureType,1)),replicate(10,paste("Date: ",sample(UKDateType, 12))),replicate(10,paste("Time: ",sample(TimeEnum,1))),replicate(10,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
+# OGDSessionType<-paste(replicate(NumRec,sample(OGDProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
+# FlexiSessionType<-paste(replicate(NumRec,sample(FlexiProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
+# ColonSessionType<-paste(replicate(NumRec,sample(ColonProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
+# ERCPSessionType<-paste(replicate(NumRec,sample(ERCPProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
+# 
+
+# # TO BE REINSTATED
+# ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Procedure"]),sample(OGDSessionType,1),
+#                                    ifelse(grepl("COLON",x["Procedure"]),sample(ColonSessionType,1),
+#                                           ifelse(grepl("FLEXI",x["Procedure"]),sample(FlexiSessionType,1),
+#                                                  ifelse(grepl("ERCP",x["Procedure"]),sample(ERCPSessionType,1),""))))
+# })
 
 
-# TO BE REINSTATED
-ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Procedure"]),sample(OGDSessionType,1),
-                                   ifelse(grepl("COLON",x["Procedure"]),sample(ColonSessionType,1),
-                                          ifelse(grepl("FLEXI",x["Procedure"]),sample(FlexiSessionType,1),
-                                                 ifelse(grepl("ERCP",x["Procedure"]),sample(ERCPSessionType,1),""))))
-})
-
-
-
-
+bounddf<-rbind(ColonProcedureDf,OGDProcedureDf)
+bounddf<-rbind(bounddf,FlexiProcedureDf)
+bounddf<-rbind(bounddf,ERCPProcedureDf)
 #Then fill the rest of the columns with the relevant findings- it is easier to created the columns from the separated out whole report rather than as we go
 #This means that the separated out columns are relevant to the whole report
 
@@ -124,25 +119,26 @@ ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Proc
 #Then see if can merge with some of the HES dataset
 #Then use EndoMineR to see if can develop some functions for complications 
        
-     
-#to Do:
-#How to split the Endoscopy into separate columns ?Using EndoMineR
-mywords<-c("Gender","Age","Admission Type","Urgency","Pethidine","Midazolam","Fentanyl","Buscopan","Propofol",
-                 "Therapy","Biopsy","PolypSize","Tattoo:","Endoscopist Role","Procedure Role","Extent Type",
-                 "jManoeuvre","Indications", "Limitations","Biopsy site","Number of biopsies:","Adverse Event",
-                 "Diagnosis","Biopsy site:","Procedure","Discomfort","Discomfort","Extent",
-                 "entonox","antibioticGiven","generalAnaes","pharyngealAnaes",
-                 "digitalRectalExamination","magneticEndoscopeImagerUsed","Date","Time","Session Type" )
+#      
+# #to Do:
+# #How to split the Endoscopy into separate columns ?Using EndoMineR
+# mywords<-c("Gender","Age","Admission Type","Urgency","Pethidine","Midazolam","Fentanyl","Buscopan","Propofol",
+#            "entonox","generalAnaes","pharyngealAnaes","NestedProcByRole","Therapy",
+#                   "Biopsy","PolypSize","Tattoo:","Endoscopist Role","Procedure Role","Extent Type",
+#                  "jManoeuvre","Indications", "Limitations","Biopsy site","Number of biopsies:","Adverse Event",
+#                  "Diagnosis","Biopsy site:","Procedure","Discomfort","Discomfort","Extent","antibioticGiven",
+#                  "digitalRectalExamination","magneticEndoscopeImagerUsed","Date","Time","Session Type" )
+# 
+# 
+# ProcFrame2<-Extractor(ProcFrame,"Procedure",mywords)
+# ProcFrameFily<-ProcFrame[grepl("OGD",ProcFrame$Procedure),]
+# ProcFrameFily<-Extractor(ProcFrameFily,"Procedure",mywords)
 
 
-ProcFrame2<-Extractor(ProcFrame,"Procedure",mywords)
-
-ProcFrameFily<-ProcFrame[grepl("ERCP",ProcFrame$Procedure),]
-ProcFrameFily<-Extractor(ProcFrameFily,"Procedure",mywords)
-#Give weightings when sampling
-#Change EndoMineR so that if doesn't find the column then enters NA
-#Algorithm the Enums
-#Then see if can incorporate HES_ID's and take it from there
-#Allow incorporation of two or more things into some of the sections- how are polyps and respective sizes handled
+#Give weightings when sampling.
+#Nest the trainer and trainee roles.
+#Algorithm the Enums.
+#Then see if can incorporate HES_ID's and take it from there.
+#Allow incorporation of two or more things into some of the sections- how are polyps and respective sizes handled.
 
 
