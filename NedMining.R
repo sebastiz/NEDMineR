@@ -136,8 +136,27 @@ bounddf<-rbind(bounddf,ERCPProcedureDf)
 
 
 #Give weightings when sampling.
-#Nest the trainer and trainee roles.
-#Algorithm the Enums.
+#Algorithm the Enums- determine the field dependencies as conditionals NestedProcByRole BiopsyType Extent
+
+#Within NestedProcByRole need to make sure it is consistent is polyp vs no polyp and with the Extent
+#Biopsy type needs to be consistent with number taken and also with the Extent
+#Procedure abandoned or limited-----
+
+# If OGDExtentTypeEnum==Abandoned then NA for the rest of the fields
+# If OGDLimitationsEnum==patient discomfort then Discomfort ==5
+# If OGDLimitationsEnum==Not Limited then Extent = maximum for that dataset eg D2 for OGD
+# If OGDLimitationsEnum==benign stricture then Extent = any extent
+
+#If OGDExtentTypeEnum==
+#           | 
+#           |
+
+#Extent-----
+#           |
+#           | 
+#           |
+  
+
 #Then see if can incorporate HES_ID's and take it from there.
 #Allow incorporation of two or more things into some of the sections- how are polyps and respective sizes handled.
 

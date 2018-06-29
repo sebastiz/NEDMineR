@@ -28,7 +28,6 @@ OGDStaffType<-paste(replicate(NumRec,sample(OGDTherapeuticType,1)),
 
 #The composite:
 
-
 #Creat columns and then replicate the rows:
 OGDProcedureDf <- data.frame(matrix(NA, nrow = 1000, ncol = 1))
 OGDProcedureDf$Gender<-replicate(NumRec,paste("Gender: ",sample(GeneralGenderType,1)))
