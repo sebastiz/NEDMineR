@@ -142,20 +142,22 @@ bounddf<-rbind(bounddf,ERCPProcedureDf)
 #Biopsy type needs to be consistent with number taken and also with the Extent
 #Procedure abandoned or limited-----
 
-# If OGDExtentTypeEnum==Abandoned then NA for the rest of the fields
-# If OGDLimitationsEnum==patient discomfort then Discomfort ==5
-# If OGDLimitationsEnum==Not Limited then Extent = maximum for that dataset eg D2 for OGD
-# If OGDLimitationsEnum==benign stricture then Extent = any extent
+# If bounddf=="Abandoned" then NA for the rest of the fields
 
-#If OGDExtentTypeEnum==
-#           | 
-#           |
+bounddf$NestedProcByRole<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$NestedProcByRole)
+bounddf$LimitationType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$LimitationType)
+bounddf$BiopsyType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$BiopsyType)
+bounddf$AdverseEventType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$AdverseEventType)
+bounddf$DiagnoseType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$DiagnoseType)
+bounddf$NestedProcByRole<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$magneticEndoscopeImagerUsed)
 
-#Extent-----
-#           |
-#           | 
-#           |
-  
+
+
+
+
+#Need to give extents numbers so that biopsy site can be <numberin extent- need to write this as a function maybe
+#If polypSize is something then Therapy is polyp related thing
+
 
 #Then see if can incorporate HES_ID's and take it from there.
 #Allow incorporation of two or more things into some of the sections- how are polyps and respective sizes handled.

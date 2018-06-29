@@ -59,4 +59,13 @@ OGDProcedureDf$UKDateType<-replicate(NumRec,paste("Date: ",sample(UKDateType, 1)
 OGDProcedureDf$TimeEnum<-replicate(NumRec,paste("Time: ",sample(TimeEnum,1)))
 OGDProcedureDf$GeneralSessionTypeEnum<-replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1)))
 
+#The algorithms
 
+# If OGDLimitationsEnum==patient discomfort then Discomfort ==5
+
+bounddf$Discomfort<-ifelse(grepl("patient discomfort", bounddf$LimitationType),"Yes",bounddf$Discomfort)
+
+
+# If OGDLimitationsEnum==Not Limited then Extent = maximum for that dataset eg D2 for OGD
+
+bounddf$Extent<-ifelse(grepl("Not Limited", bounddf$LimitationType),"D2- 2nd part of duodenum",bounddf$Extent)
