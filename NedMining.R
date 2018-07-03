@@ -95,20 +95,6 @@ source("/home/rstudio/NEDMineR/Colon.R")
 source("/home/rstudio/NEDMineR/ERCP.R")
 
 
-# OGDSessionType<-paste(replicate(NumRec,sample(OGDProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-# FlexiSessionType<-paste(replicate(NumRec,sample(FlexiProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-# ColonSessionType<-paste(replicate(NumRec,sample(ColonProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-# ERCPSessionType<-paste(replicate(NumRec,sample(ERCPProcedureType,1)),replicate(NumRec,paste("Date: ",sample(UKDateType, 12))),replicate(NumRec,paste("Time: ",sample(TimeEnum,1))),replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1))))
-# 
-
-# # TO BE REINSTATED
-# ProcFrame$Procedure<-apply(ProcFrame, 1, function(x) {ifelse(grepl("OGD",x["Procedure"]),sample(OGDSessionType,1),
-#                                    ifelse(grepl("COLON",x["Procedure"]),sample(ColonSessionType,1),
-#                                           ifelse(grepl("FLEXI",x["Procedure"]),sample(FlexiSessionType,1),
-#                                                  ifelse(grepl("ERCP",x["Procedure"]),sample(ERCPSessionType,1),""))))
-# })
-
-
 bounddf<-rbind(ColonProcedureDf,OGDProcedureDf)
 bounddf<-rbind(bounddf,FlexiProcedureDf)
 bounddf<-rbind(bounddf,ERCPProcedureDf)
@@ -117,43 +103,29 @@ bounddf<-rbind(bounddf,ERCPProcedureDf)
 
 #Then use the HES_ID.
 #Then see if can merge with some of the HES dataset
-#Then use EndoMineR to see if can develop some functions for complications 
-       
-#      
-# #to Do:
-# #How to split the Endoscopy into separate columns ?Using EndoMineR
-# mywords<-c("Gender","Age","Admission Type","Urgency","Pethidine","Midazolam","Fentanyl","Buscopan","Propofol",
-#            "entonox","generalAnaes","pharyngealAnaes","NestedProcByRole","Therapy",
-#                   "Biopsy","PolypSize","Tattoo:","Endoscopist Role","Procedure Role","Extent Type",
-#                  "jManoeuvre","Indications", "Limitations","Biopsy site","Number of biopsies:","Adverse Event",
-#                  "Diagnosis","Biopsy site:","Procedure","Discomfort","Discomfort","Extent","antibioticGiven",
-#                  "digitalRectalExamination","magneticEndoscopeImagerUsed","Date","Time","Session Type" )
-# 
-# 
-# ProcFrame2<-Extractor(ProcFrame,"Procedure",mywords)
-# ProcFrameFily<-ProcFrame[grepl("OGD",ProcFrame$Procedure),]
-# ProcFrameFily<-Extractor(ProcFrameFily,"Procedure",mywords)
+#Then use EndoMineR to see if can develop some functions for complications.
 
 
 #Give weightings when sampling.
-#Algorithm the Enums- determine the field dependencies as conditionals NestedProcByRole BiopsyType Extent
-
 #Within NestedProcByRole need to make sure it is consistent is polyp vs no polyp and with the Extent
 #Biopsy type needs to be consistent with number taken and also with the Extent
 #Procedure abandoned or limited-----
 
-# If bounddf=="Abandoned" then NA for the rest of the fields
+################################### General algorithms 1 ###################################################################### 
 
 bounddf$NestedProcByRole<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$NestedProcByRole)
 bounddf$LimitationType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$LimitationType)
 bounddf$BiopsyType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$BiopsyType)
 bounddf$AdverseEventType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$AdverseEventType)
 bounddf$DiagnoseType<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$DiagnoseType)
-bounddf$NestedProcByRole<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$magneticEndoscopeImagerUsed)
+bounddf$magneticEndoscopeImagerUsed<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$magneticEndoscopeImagerUsed)
+
+############################################################################################################################### 
 
 
+# If LimitationsEnum==patient discomfort then Discomfort ==5
 
-
+bounddf$Discomfort<-ifelse(grepl("patient discomfort", bounddf$LimitationType),"Yes",bounddf$Discomfort)
 
 #Need to give extents numbers so that biopsy site can be <numberin extent- need to write this as a function maybe
 #If polypSize is something then Therapy is polyp related thing
@@ -161,5 +133,7 @@ bounddf$NestedProcByRole<-ifelse(grepl("Abandoned", bounddf$Extent),NA,bounddf$m
 
 #Then see if can incorporate HES_ID's and take it from there.
 #Allow incorporation of two or more things into some of the sections- how are polyps and respective sizes handled.
-
+#Need to make sure the data set makes sense
+#Need to make sure that all the fields are represented as per the NED data dictionary (eg comments and free text etc)
+#Make sure all the fields are formatted correctly
 

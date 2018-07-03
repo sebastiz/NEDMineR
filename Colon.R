@@ -46,12 +46,77 @@ ColonProcedureDf$pharyngealAnaes<-replicate(NumRec,paste(sample(GeneralYesNoEnum
 ColonProcedureDf$NestedProcByRole<-replicate(NumRec,paste(sample(ColonStaffType,sample(1:3))))
 ColonProcedureDf$IndicationType<-replicate(NumRec,paste(sample(ColonIndicationType,sample(1:3))))
 ColonProcedureDf$LimitationType<-replicate(NumRec,paste(sample(ColonLimitationType,1)))
-ColonProcedureDf$BiopsyType<-replicate(NumRec,sample(ColonBiopsyType,1))
+#ColonProcedureDf$BiopsyType<-replicate(NumRec,sample(ColonBiopsyType,1))
+ColonProcedureDf$Extent<-replicate(NumRec,sample(ColonExtentTypeEnum,1))
+
+######################################################## Local Algo 1########################################################################################
+ColonProcedureDf$Extent<-ifelse(grepl("Not Limited|failed", ColonProcedureDf$LimitationType),"D2- 2nd part of duodenum",ColonProcedureDf$Extent)
+ColonProcedureDf$ExtentNumber<-ifelse(grepl("Anus", ColonProcedureDf$Extent),1,
+                                    ifelse(grepl("Pouch", ColonProcedureDf$Extent),2,
+                                    ifelse(grepl("Rectum", ColonProcedureDf$Extent),3,
+                                    ifelse(grepl("Sigmoid colon", ColonProcedureDf$Extent),4,
+                                    ifelse(grepl("Descending Colon", ColonProcedureDf$Extent),5,
+                                    ifelse(grepl("Splenic flexure", ColonProcedureDf$Extent),6,
+                                    ifelse(grepl("Transverse Colon", ColonProcedureDf$Extent),7,
+                                    ifelse(grepl("Hepatic flexure", ColonProcedureDf$Extent),8,
+                                    ifelse(grepl("Ascending Colon", ColonProcedureDf$Extent),9,
+                                    ifelse(grepl("Caecum", ColonProcedureDf$Extent),10,
+                                    ifelse(grepl("Ascending Colon", ColonProcedureDf$Extent),11,
+                                    ifelse(grepl("Ileo-colon anastomosis", ColonProcedureDf$Extent),12,
+                                    ifelse(grepl("Terminal ileum", ColonProcedureDf$Extent),13,
+                                    ifelse(grepl("Neo-terminal ileum", ColonProcedureDf$Extent),14,
+                                    ifelse(grepl("Neo-terminal ileum", ColonProcedureDf$Extent),15,
+                                    ifelse(grepl("Caecum", ColonProcedureDf$Extent),3,ColonProcedureDf$Extent))))))))))))))))
+
+
+##############################################################################################################################################################
+
+
+#This makes sure that the biopsy site is in a list and that the site is not duplicated
+ColonProcedureDf$BiopsyType<-replicate(NumRec,paste(sample(paste("Biopsy site:",sample(ColonBiopsyEnum)),sample(1:4,replace=T))))
+
+
+
+########################################################## Local Algo 2 ########################################################################################
+#This makes sure that if the biopsy site is none then no number of biopsies are allocated to it.
+ColonProcedureDf$BiopsyType<-lapply(ColonProcedureDf$BiopsyType, function(p)
+  ifelse(!grepl("None",p),paste(p,"Number of biopsies:",sample(1:10)),p)
+)
+
+########################################################## Local Algo 3 ########################################################################################
+
+#Need to make sure the biopsies and extent match up ie the biopsies should only be taken from before the extent
+
+#Checking using the extent has a number. Associate the biopsy site with a number. 
+ColonProcedureDf$BiopsyType<-lapply(ColonProcedureDf$BiopsyType, function(p)
+  ifelse(grepl("Oesophagus",p),gsub("Biopsy site: Oesophagus","1--Biopsy site: Oesophagus",p),
+         ifelse(grepl("Stomach",p),gsub("Biopsy site: Stomach","2--Biopsy site: Stomach",p),
+                ifelse(grepl("Duodenal bulb",p),gsub("Biopsy site: Duodenal bulb","3--Biopsy site: Duodenal bulb",p),
+                       ifelse(grepl("D2",p),gsub("Biopsy site: D2","4--Biopsy site: D2",p),p)))))
+
+
+#If the number of extent is < the biopsy site then remove the biopsy site
+ColonProcedureDf$BiopsyType<-Map(function(x,y)y[as.numeric(x)>=as.numeric(sub("^(\\d+).*$|.*","\\1",y))],
+                               ColonProcedureDf$ExtentNumber,ColonProcedureDf$BiopsyType)
+
+
+
+########################################################## Local Algo 4 ########################################################################################
+
+# Make sure trainee is doing the same thing as trainer
+
+
+
+
+################################################################################################################################################################
+
+
+
+
 ColonProcedureDf$AdverseEventType<-replicate(NumRec,sample(AdverseEventType,1))
 ColonProcedureDf$DiagnoseType<-replicate(NumRec,sample(ColonDiagnoseType,1))
 ColonProcedureDf$Procedure<-replicate(NumRec,sample("Procedure:Colon",1))
 ColonProcedureDf$Discomfort<-replicate(NumRec,sample(GeneralDiscomfortEnum[[1]],1))
-ColonProcedureDf$Extent<-replicate(NumRec,sample(ColonExtentTypeEnum,1))
 ColonProcedureDf$antibioticGiven<-replicate(NumRec,sample(GeneralYesNoEnum,1))
 ColonProcedureDf$digitalRectalExamination<-replicate(NumRec,sample(GeneralYesNoEnum,1))
 ColonProcedureDf$magneticEndoscopeImagerUsed<-replicate(NumRec,sample(GeneralYesNoEnum,1))

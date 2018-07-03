@@ -46,12 +46,62 @@ OGDProcedureDf$pharyngealAnaes<-replicate(NumRec,paste(sample(GeneralYesNoEnum,1
 OGDProcedureDf$NestedProcByRole<-replicate(NumRec,paste(sample(OGDStaffType,sample(1:3))))
 OGDProcedureDf$IndicationType<-replicate(NumRec,paste(sample(OGDIndicationType,sample(1:3))))
 OGDProcedureDf$LimitationType<-replicate(NumRec,paste(sample(OGDLimitationType,1)))
-OGDProcedureDf$BiopsyType<-replicate(NumRec,sample(OGDBiopsyType,sample(1:4)))
+OGDProcedureDf$Extent<-replicate(NumRec,sample(OGDExtentTypeEnum,1))
+
+######################################################## Local Algo 1########################################################################################
+OGDProcedureDf$Extent<-ifelse(grepl("Not Limited|failed", OGDProcedureDf$LimitationType),"D2- 2nd part of duodenum",OGDProcedureDf$Extent)
+OGDProcedureDf$ExtentNumber<-ifelse(grepl("Oesophagus", OGDProcedureDf$Extent),1,
+                                    ifelse(grepl("Stomach", OGDProcedureDf$Extent),2,
+                                           ifelse(grepl("Duodenal bulb", OGDProcedureDf$Extent),3,
+                                                  ifelse(grepl("D2", OGDProcedureDf$Extent),4,OGDProcedureDf$Extent))))
+
+
+##############################################################################################################################################################
+
+
+#This makes sure that the biopsy site is in a list and that the site is not duplicated
+OGDProcedureDf$BiopsyType<-replicate(NumRec,paste(sample(paste("Biopsy site:",sample(OGDBiopsyEnum)),sample(1:4,replace=T))))
+
+
+
+########################################################## Local Algo 2 ########################################################################################
+#This makes sure that if the biopsy site is none then no number of biopsies are allocated to it.
+OGDProcedureDf$BiopsyType<-lapply(OGDProcedureDf$BiopsyType, function(p)
+  ifelse(!grepl("None",p),paste(p,"Number of biopsies:",sample(1:10)),p)
+)
+
+########################################################## Local Algo 3 ########################################################################################
+
+#Need to make sure the biopsies and extent match up ie the biopsies should only be taken from before the extent
+
+#Checking using the extent has a number. Associate the biopsy site with a number. 
+OGDProcedureDf$BiopsyType<-lapply(OGDProcedureDf$BiopsyType, function(p)
+  ifelse(grepl("Oesophagus",p),gsub("Biopsy site: Oesophagus","1--Biopsy site: Oesophagus",p),
+         ifelse(grepl("Stomach",p),gsub("Biopsy site: Stomach","2--Biopsy site: Stomach",p),
+                ifelse(grepl("Duodenal bulb",p),gsub("Biopsy site: Duodenal bulb","3--Biopsy site: Duodenal bulb",p),
+                       ifelse(grepl("D2",p),gsub("Biopsy site: D2","4--Biopsy site: D2",p),p)))))
+
+
+#If the number of extent is < the biopsy site then remove the biopsy site
+OGDProcedureDf$BiopsyType<-Map(function(x,y)y[as.numeric(x)>=as.numeric(sub("^(\\d+).*$|.*","\\1",y))],
+    OGDProcedureDf$ExtentNumber,OGDProcedureDf$BiopsyType)
+
+
+
+########################################################## Local Algo 4 ########################################################################################
+
+# Make sure trainee is doing the same thing as trainer
+
+
+
+
+################################################################################################################################################################
+
+
 OGDProcedureDf$AdverseEventType<-replicate(NumRec,sample(AdverseEventType,1))
 OGDProcedureDf$DiagnoseType<-replicate(NumRec,sample(OGDDiagnoseType,1))
 OGDProcedureDf$Procedure<-replicate(NumRec,sample("Procedure:OGD",1))
 OGDProcedureDf$Discomfort<-replicate(NumRec,sample(GeneralDiscomfortEnum[[1]],1))
-OGDProcedureDf$Extent<-replicate(NumRec,sample(OGDExtentTypeEnum,1))
 OGDProcedureDf$antibioticGiven<-replicate(NumRec,sample(GeneralYesNoEnum,1))
 OGDProcedureDf$digitalRectalExamination<-replicate(NumRec,sample(GeneralYesNoEnum,1))
 OGDProcedureDf$magneticEndoscopeImagerUsed<-replicate(NumRec,sample(GeneralYesNoEnum,1))
@@ -60,12 +110,6 @@ OGDProcedureDf$TimeEnum<-replicate(NumRec,paste("Time: ",sample(TimeEnum,1)))
 OGDProcedureDf$GeneralSessionTypeEnum<-replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1)))
 
 #The algorithms
-
-# If OGDLimitationsEnum==patient discomfort then Discomfort ==5
-
-bounddf$Discomfort<-ifelse(grepl("patient discomfort", bounddf$LimitationType),"Yes",bounddf$Discomfort)
+OGDProcedureDf$BiopsyType<-Map(function(x, y) replace(x > y, is.na(x > y), FALSE) , OGDProcedureDf$ExtentNumber, lapply(OGDProcedureDf$BiopsyType, function(i) as.numeric(gsub('^([0-9]+)--.*$', '\\1', i))))
 
 
-# If OGDLimitationsEnum==Not Limited then Extent = maximum for that dataset eg D2 for OGD
-
-bounddf$Extent<-ifelse(grepl("Not Limited", bounddf$LimitationType),"D2- 2nd part of duodenum",bounddf$Extent)
