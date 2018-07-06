@@ -10,19 +10,24 @@ OGDTattooEnum<-ListContstructor("OGDTattooEnum","OGDExtentTypeEnum",ProcedureSpe
 OGDTherapeuticType<-paste(replicate(NumRec,sample(paste("Therapy: ",OGDTherapeuticLookupEnum),1)),
                           replicate(NumRec,sample(paste("Biopsy: ",OGDBiopsyEnum),1)),
                           replicate(NumRec,sample(paste("PolypSize: ",GeneralPolypSizeEnum),1)),
-                          replicate(NumRec,sample(paste("Tattoo: ",OGDTattooEnum),1)))
+                          replicate(NumRec,sample(paste("Tattoo: ",OGDTattooEnum),1)),
+                          replicate(NumRec,sample(paste("performed: ",OGDTattooEnum),1)),
+                          replicate(NumRec,sample(paste("successful: ",OGDTattooEnum),1)),
+                          replicate(NumRec,sample(paste("retrieved: ",OGDTattooEnum),1)),
+                          replicate(NumRec,"Comment:"))
 #Multiple
 OGDBiopsyType<-paste(replicate(NumRec,paste("Biopsy site:",sample(OGDBiopsyEnum)),1),"Number of biopsies: ",sample(1:8))
 
-OGDDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum,2))))
+OGDDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(OGDDiagnosisLookupEnum,2),"Comment:")))
 #Multiple
-OGDIndicationType<-replicate(NumRec,paste("Indications:",sample(OGDIndicationsEnum,1)))
-OGDLimitationType<-replicate(NumRec,paste("Limitations:",sample(OGDLimitationsEnum,1)))
+OGDIndicationType<-replicate(NumRec,paste("Indications:",sample(OGDIndicationsEnum,1),"Comment:"))
+OGDLimitationType<-replicate(NumRec,paste("Limitations:",sample(OGDLimitationsEnum,1),"Comment:"))
 
 #Multiple for each staff type - and ascribable to each staff type trainer or trainee- will need to be nested
 OGDStaffType<-paste(replicate(NumRec,sample(OGDTherapeuticType,1)),
                     replicate(NumRec,paste("Endoscopist Role:",sample(GeneralEndoscopistRoleTypeEnum,1))),
                     replicate(NumRec,paste("Procedure Role:",sample(GeneralProcedureRoleTypeEnum,1))),
+                    replicate(NumRec,paste("professionalBodyCode:",paste0(sample(LETTERS,1),sample(100:110)))),
                     replicate(NumRec,paste("Extent Type:",sample(OGDExtentTypeEnum,1))))
 
 
@@ -31,8 +36,10 @@ OGDStaffType<-paste(replicate(NumRec,sample(OGDTherapeuticType,1)),
 #Creat columns and then replicate the rows:
 OGDProcedureDf <- data.frame(matrix(NA, nrow = 1000, ncol = 1))
 OGDProcedureDf$Gender<-replicate(NumRec,paste("Gender: ",sample(GeneralGenderType,1)))
-OGDProcedureDf$Age<-replicate(NumRec,paste("Age: ",sample(18:99,1)))
+OGDProcedureDf$Age<-replicate(NumRec,sample(18:99,1))
 OGDProcedureDf$Admission<-replicate(NumRec,paste("Admission Type: ",sample(GeneralAdmissionTypeEnum,1)))
+OGDProcedureDf$localProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
+OGDProcedureDf$PreviouslocalProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
 OGDProcedureDf$jManoeuvre<-replicate(NumRec,paste("jManoeuvre:",sample(GeneralYesNoEnum,1)))
 OGDProcedureDf$Urgency<-replicate(NumRec,paste("Urgency: ",sample(GeneralUrgencyEnum,1)))
 OGDProcedureDf$Pethidine<-replicate(NumRec,as.integer(sample(seq(12.5,100,12.5),1)))
@@ -99,6 +106,8 @@ OGDProcedureDf$BiopsyType<-Map(function(x,y)y[as.numeric(x)>=as.numeric(sub("^(\
 
 
 OGDProcedureDf$AdverseEventType<-replicate(NumRec,sample(AdverseEventType,1))
+OGDProcedureDf$AdverseEventTypeComment<-replicate(NumRec,"Comment")
+OGDProcedureDf$ScopeWithdrawalTime<-replicate(NumRec,paste("Withdrawl time:",sample(3:35,1,replace=T)))
 OGDProcedureDf$DiagnoseType<-replicate(NumRec,sample(OGDDiagnoseType,1))
 OGDProcedureDf$Procedure<-replicate(NumRec,sample("Procedure:OGD",1))
 OGDProcedureDf$Discomfort<-replicate(NumRec,sample(GeneralDiscomfortEnum[[1]],1))
@@ -108,8 +117,6 @@ OGDProcedureDf$magneticEndoscopeImagerUsed<-replicate(NumRec,sample(GeneralYesNo
 OGDProcedureDf$UKDateType<-replicate(NumRec,paste("Date: ",sample(UKDateType, 1)))
 OGDProcedureDf$TimeEnum<-replicate(NumRec,paste("Time: ",sample(TimeEnum,1)))
 OGDProcedureDf$GeneralSessionTypeEnum<-replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1)))
-
-#The algorithms
-OGDProcedureDf$BiopsyType<-Map(function(x, y) replace(x > y, is.na(x > y), FALSE) , OGDProcedureDf$ExtentNumber, lapply(OGDProcedureDf$BiopsyType, function(i) as.numeric(gsub('^([0-9]+)--.*$', '\\1', i))))
-
+OGDProcedureDf$GeneralSessionTypeIDEnum<-replicate(NumRec,paste("Session Type: ",paste0(sample(LETTERS,1),sample(10:99,1,replace=T))))
+OGDProcedureDf$SessionTypeDescription<-replicate(NumRec,paste("Session Type Description: "))
 

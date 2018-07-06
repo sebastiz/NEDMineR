@@ -54,6 +54,7 @@ NumRec<-1000
 
 
 ########################### GeneralEnums - these are from the downloaded xlsx but eventually want to include these terms in the ProcedureSpecifValues file###########################
+GeneralSessionSiteEnum<-ListContstructor("GeneralSessionSiteEnum","GeneralAdmissionTypeEnum",ProcedureSpecifiValues)
 GeneralSessionTypeEnum<-ListContstructor("GeneralSessionTypeEnum","GeneralAdmissionTypeEnum",ProcedureSpecifiValues)
 GeneralAdmissionTypeEnum<-ListContstructor("GeneralAdmissionTypeEnum","GeneralUrgencyEnum",ProcedureSpecifiValues)
 GeneralUrgencyEnum<-ListContstructor("GeneralUrgencyEnum","GeneralProcedureRoleTypeEnum",ProcedureSpecifiValues)
@@ -136,4 +137,6 @@ bounddf$Discomfort<-ifelse(grepl("patient discomfort", bounddf$LimitationType),"
 #Need to make sure the data set makes sense
 #Need to make sure that all the fields are represented as per the NED data dictionary (eg comments and free text etc)
 #Make sure all the fields are formatted correctly
+#If polyp present then put polyp size otherwise put N/A
+
 

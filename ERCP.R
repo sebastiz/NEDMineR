@@ -10,17 +10,18 @@ ERCPTattooEnum<-ListContstructor("ERCPTattooEnum","ERCPBiopsyEnum",ProcedureSpec
 ERCPTherapeuticType<-paste(replicate(NumRec,sample(paste("Therapy: ",ERCPTherapeuticLookupEnum),1)),
                            replicate(NumRec,sample(paste("Biopsy: ",ERCPBiopsyEnum),1)),
                            replicate(NumRec,sample(paste("PolypSize: ",GeneralPolypSizeEnum),1)),
-                           replicate(NumRec,sample(paste("Tattoo: ",ERCPTattooEnum),1)))
+                           replicate(NumRec,sample(paste("Tattoo: ",ERCPTattooEnum),1)),
+                           replicate(NumRec,"Comment:"))
 
 #Multiple
 ERCPBiopsyType<-replicate(NumRec,paste("Biopsy site:NA Number of biopsies: NA"))
 
 #Multiple
-ERCPDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(ERCPDiagnosisLookupEnum,2))))
+ERCPDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(ERCPDiagnosisLookupEnum,2),"Comment:")))
 
 
-ERCPIndicationType<-replicate(NumRec,paste("Indications:",sample(ERCPIndicationsEnum,1)))
-ERCPLimitationType<-replicate(NumRec,paste("Limitations:",sample(ERCPLimitationsEnum,1)))
+ERCPIndicationType<-replicate(NumRec,paste("Indications:",sample(ERCPIndicationsEnum,1),"Comment:"))
+ERCPLimitationType<-replicate(NumRec,paste("Limitations:",sample(ERCPLimitationsEnum,1),"Comment:"))
 
 #Multiple
 ERCPStaffType<-paste(replicate(NumRec,paste(ERCPTherapeuticType,1)),
@@ -34,7 +35,9 @@ ERCPStaffType<-paste(replicate(NumRec,paste(ERCPTherapeuticType,1)),
 #Creat columns and then replicate the rows:
 ERCPProcedureDf <- data.frame(matrix(NA, nrow = 1000, ncol = 1))
 ERCPProcedureDf$Gender<-replicate(NumRec,paste("Gender: ",sample(GeneralGenderType,1)))
-ERCPProcedureDf$Age<-replicate(NumRec,paste("Age: ",sample(18:99,1)))
+ERCPProcedureDf$Age<-replicate(NumRec,sample(18:99,1))
+ERCPProcedureDf$localProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
+ERCPProcedureDf$PreviouslocalProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
 ERCPProcedureDf$Admission<-replicate(NumRec,paste("Admission Type: ",sample(GeneralAdmissionTypeEnum,1)))
 ERCPProcedureDf$jManoeuvre<-replicate(NumRec,paste("jManoeuvre:",sample(GeneralYesNoEnum,1)))
 ERCPProcedureDf$Urgency<-replicate(NumRec,paste("Urgency: ",sample(GeneralUrgencyEnum,1)))
@@ -94,18 +97,15 @@ ERCPProcedureDf$BiopsyType<-Map(function(x,y)y[as.numeric(x)>=as.numeric(sub("^(
 
 ########################################################## Local Algo 4 ########################################################################################
 
-# Make sure trainee is doing the same thing as trainer
-
-
+# Make sure trainee is doing the same thing as trainer:
 
 
 ################################################################################################################################################################
 
 
-
-
-
 ERCPProcedureDf$AdverseEventType<-replicate(NumRec,sample(AdverseEventType,1))
+ERCPProcedureDf$AdverseEventTypeComment<-replicate(NumRec,"Comment")
+ERCPProcedureDf$ScopeWithdrawalTime<-replicate(NumRec,paste("Withdrawl time:",sample(3:35,1,replace=T)))
 ERCPProcedureDf$DiagnoseType<-replicate(NumRec,sample(ERCPDiagnoseType,1))
 ERCPProcedureDf$Procedure<-replicate(NumRec,sample("Procedure:ERCP",1))
 ERCPProcedureDf$Discomfort<-replicate(NumRec,sample(GeneralDiscomfortEnum[[1]],1))
@@ -115,3 +115,6 @@ ERCPProcedureDf$magneticEndoscopeImagerUsed<-replicate(NumRec,sample(GeneralYesN
 ERCPProcedureDf$UKDateType<-replicate(NumRec,paste("Date: ",sample(UKDateType, 1)))
 ERCPProcedureDf$TimeEnum<-replicate(NumRec,paste("Time: ",sample(TimeEnum,1)))
 ERCPProcedureDf$GeneralSessionTypeEnum<-replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1)))
+ERCPProcedureDf$GeneralSessionTypeIDEnum<-replicate(NumRec,paste("Session Type: ",paste0(sample(LETTERS,1),sample(10:99,1,replace=T))))
+ERCPProcedureDf$SessionTypeDescription<-replicate(NumRec,paste("Session Type Description: "))
+

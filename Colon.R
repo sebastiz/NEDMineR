@@ -10,14 +10,16 @@ ColonTattooEnum<-ListContstructor("ColonTattooEnum","FlexiExtentTypeEnum",Proced
 ColonTherapeuticType<-paste(replicate(NumRec,sample(paste("Therapy: ",ColonTherapeuticLookupEnum),1)),
                             replicate(NumRec,sample(paste("Biopsy: ",ColonBiopsyEnum),1)),
                             replicate(NumRec,sample(paste("PolypSize: ",GeneralPolypSizeEnum[[1]]),1)),
-                            replicate(NumRec,sample(paste("Tattoo: ",ColonTattooEnum),1)))
+                            replicate(NumRec,sample(paste("Tattoo: ",ColonTattooEnum),1)),
+                            replicate(NumRec,"Comment:"))
+
 
 ColonBiopsyType<-paste(replicate(NumRec,paste("Biopsy site:",sample(ColonBiopsyEnum)),1),"Number of biopsies: ",sample(1:8))
 
-ColonDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(ColonDiagnosisLookupEnum,1))))
+ColonDiagnoseType<-paste(replicate(NumRec,paste("Diagnosis:",sample(ColonDiagnosisLookupEnum,1),"Comment:")))
 
-ColonIndicationType<-replicate(NumRec,paste("Indications:",sample(ColonIndicationsEnum,1)))
-ColonLimitationType<-replicate(NumRec,paste("Limitations:",sample(ColonLimitationsEnum,1)))
+ColonIndicationType<-replicate(NumRec,paste("Indications:",sample(ColonIndicationsEnum,1),"Comment:"))
+ColonLimitationType<-replicate(NumRec,paste("Limitations:",sample(ColonLimitationsEnum,1),"Comment:"))
 
 ColonStaffType<-paste(replicate(NumRec,paste(ColonTherapeuticType,1)),
                       replicate(NumRec,paste("Endoscopist Role:",sample(GeneralEndoscopistRoleTypeEnum[[1]],1))),
@@ -31,7 +33,9 @@ ColonStaffType<-paste(replicate(NumRec,paste(ColonTherapeuticType,1)),
 #Creat columns and then replicate the rows:
 ColonProcedureDf <- data.frame(matrix(NA, nrow = 1000, ncol = 1))
 ColonProcedureDf$Gender<-replicate(NumRec,paste("Gender: ",sample(GeneralGenderType,1)))
-ColonProcedureDf$Age<-replicate(NumRec,paste("Age: ",sample(18:99,1)))
+ColonProcedureDf$Age<-replicate(NumRec,sample(18:99,1))
+ColonProcedureDf$localProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
+ColonProcedureDf$PreviouslocalProcedureId<-replicate(NumRec,paste0(paste0(sample(LETTERS,1),sample(10000:99999,1,replace=T))))
 ColonProcedureDf$Admission<-replicate(NumRec,paste("Admission Type: ",sample(GeneralAdmissionTypeEnum,1)))
 ColonProcedureDf$jManoeuvre<-replicate(NumRec,paste("jManoeuvre:",sample(GeneralYesNoEnum,1)))
 ColonProcedureDf$Urgency<-replicate(NumRec,paste("Urgency: ",sample(GeneralUrgencyEnum,1)))
@@ -110,10 +114,9 @@ ColonProcedureDf$BiopsyType<-Map(function(x,y)y[as.numeric(x)>=as.numeric(sub("^
 
 ################################################################################################################################################################
 
-
-
-
 ColonProcedureDf$AdverseEventType<-replicate(NumRec,sample(AdverseEventType,1))
+ColonProcedureDf$AdverseEventTypeComment<-replicate(NumRec,"Comment")
+ColonProcedureDf$ScopeWithdrawalTime<-replicate(NumRec,paste("Withdrawl time:",sample(3:35,1,replace=T)))
 ColonProcedureDf$DiagnoseType<-replicate(NumRec,sample(ColonDiagnoseType,1))
 ColonProcedureDf$Procedure<-replicate(NumRec,sample("Procedure:Colon",1))
 ColonProcedureDf$Discomfort<-replicate(NumRec,sample(GeneralDiscomfortEnum[[1]],1))
@@ -123,5 +126,6 @@ ColonProcedureDf$magneticEndoscopeImagerUsed<-replicate(NumRec,sample(GeneralYes
 ColonProcedureDf$UKDateType<-replicate(NumRec,paste("Date: ",sample(UKDateType, 1)))
 ColonProcedureDf$TimeEnum<-replicate(NumRec,paste("Time: ",sample(TimeEnum,1)))
 ColonProcedureDf$GeneralSessionTypeEnum<-replicate(NumRec,paste("Session Type: ",sample(GeneralSessionTypeEnum,1)))
+ColonProcedureDf$GeneralSessionTypeIDEnum<-replicate(NumRec,paste("Session Type: ",paste0(sample(LETTERS,1),sample(10:99,1,replace=T))))
 
-
+ColonProcedureDf$SessionTypeDescription<-replicate(NumRec,paste("Session Type Description: "))
